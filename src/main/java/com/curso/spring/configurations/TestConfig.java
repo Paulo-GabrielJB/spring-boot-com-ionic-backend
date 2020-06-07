@@ -8,8 +8,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.curso.spring.models.entities.Categoria;
+import com.curso.spring.models.entities.Cidade;
+import com.curso.spring.models.entities.Estado;
 import com.curso.spring.models.entities.Produto;
 import com.curso.spring.repositories.CategoriaRepository;
+import com.curso.spring.repositories.CidadeRepository;
+import com.curso.spring.repositories.EstadoRepository;
 import com.curso.spring.repositories.ProdutoRepository;
 
 @Configuration
@@ -20,7 +24,11 @@ public class TestConfig implements CommandLineRunner{
 	private CategoriaRepository categoriaRepository;
 	@Autowired
 	private ProdutoRepository produtoRepository;
-
+	@Autowired
+	private EstadoRepository estadoRepository;
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	
 	@Override
 	public void run(String... args) throws Exception {
 		
@@ -48,6 +56,17 @@ public class TestConfig implements CommandLineRunner{
 		
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 		
+		
+		Estado e1 = new Estado(null, "Minas Gerais");
+		Estado e2 = new Estado(null, "São Paulo");
+		
+		estadoRepository.saveAll(Arrays.asList(e1, e2));
+		
+		Cidade ci1 = new Cidade(null, "Uberlandia", e1);
+		Cidade ci2 = new Cidade(null, "São Paulo", e2);
+		Cidade ci3 = new Cidade(null, "Osasco", e2);
+		
+		cidadeRepository.saveAll(Arrays.asList(ci1, ci2, ci3));
 		
 		
 	}
