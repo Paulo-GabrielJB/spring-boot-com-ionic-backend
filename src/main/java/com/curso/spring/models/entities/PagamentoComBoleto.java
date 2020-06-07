@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.curso.spring.models.entities.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "TB_PAGAMENTO_COM_BOLETO")
@@ -15,8 +16,10 @@ public class PagamentoComBoleto extends Pagamento {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "DT_VENCIMENTO")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date dataVencimento;
 	@Column(name = "DT_PAGAMENTO")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date dataPagamento;
 	
 	public PagamentoComBoleto() {}

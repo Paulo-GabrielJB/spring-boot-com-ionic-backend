@@ -13,6 +13,7 @@ import com.curso.spring.models.entities.Cidade;
 import com.curso.spring.models.entities.Cliente;
 import com.curso.spring.models.entities.Endereco;
 import com.curso.spring.models.entities.Estado;
+import com.curso.spring.models.entities.ItemPedido;
 import com.curso.spring.models.entities.Pagamento;
 import com.curso.spring.models.entities.PagamentoComBoleto;
 import com.curso.spring.models.entities.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.curso.spring.repositories.CidadeRepository;
 import com.curso.spring.repositories.ClienteRepository;
 import com.curso.spring.repositories.EnderecoRepository;
 import com.curso.spring.repositories.EstadoRepository;
+import com.curso.spring.repositories.ItemPedidoRepository;
 import com.curso.spring.repositories.PagamentoRepository;
 import com.curso.spring.repositories.PedidoRepository;
 import com.curso.spring.repositories.ProdutoRepository;
@@ -49,6 +51,8 @@ public class TestConfig implements CommandLineRunner{
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -115,6 +119,12 @@ public class TestConfig implements CommandLineRunner{
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, p1.getPreco());
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, p3.getPreco());
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, p2.getPreco());
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
 		
 	}

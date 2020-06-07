@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.curso.spring.models.entities.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "TB_PAGAMENTO")
@@ -27,6 +28,7 @@ public abstract class Pagamento implements Serializable {
 	private Integer estado;
 	@MapsId
 	@OneToOne
+	@JsonIgnore
 	@JoinColumn(name = "CD_PEDIDO")
 	private Pedido pedido;
 	

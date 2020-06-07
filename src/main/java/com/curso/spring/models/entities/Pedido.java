@@ -2,6 +2,8 @@ package com.curso.spring.models.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,10 +13,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "TB_PEDIDO")
@@ -27,12 +30,12 @@ public class Pedido implements Serializable {
 	@Column(name = "CD_PEDIDO")
 	private Long id;
 	@Column(name = "DT_PEDIDO")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date instante;
 	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
 	@JoinColumn(name = "CD_PAGAMENTO")
 	private Pagamento pagamento;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "CD_CLIENTE")
 	private Cliente cliente;
@@ -40,6 +43,9 @@ public class Pedido implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "CD_ENDERECO_ENTREGA")
 	private Endereco enderecoDeEntrega;
+	
+	@OneToMany(mappedBy = "id.pedido")
+	private Set<ItemPedido> itens = new HashSet<>();
 
 	public Pedido() {
 	}
@@ -89,6 +95,10 @@ public class Pedido implements Serializable {
 
 	public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) {
 		this.enderecoDeEntrega = enderecoDeEntrega;
+	}
+
+	public Set<ItemPedido> getItens() {
+		return itens;
 	}
 
 	@Override
