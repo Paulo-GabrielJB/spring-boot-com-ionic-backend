@@ -9,30 +9,39 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TB_CATEGORIA")
-public class Categoria implements Serializable {
+@Table(name = "TB_PRODUTO")
+public class Produto implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "CD_CATEGORIA")
+	@Column(name = "CD_PRODUTO")
 	private Long id;
-	@Column(name = "NM_CATEGORIA")
+	@Column(name = "NM_PRODUTO")
 	private String nome;
+	@Column(name = "PR_PRODUTO")
+	private Double preco;
 	
-	@ManyToMany(mappedBy = "categorias")
-	private Set<Produto> produtos = new HashSet<>();
+	@ManyToMany
+	@JoinTable(name = "TB_PRODUTO_CATEGORIA",
+		joinColumns = @JoinColumn(name = "CD_PRODUTO"),
+		inverseJoinColumns = @JoinColumn(name = "CD_CATEGORIA"))
+	private Set<Categoria> categorias = new HashSet<>();	
 	
-	public Categoria() {}
+	public Produto() {}
 
-	public Categoria(Long id, String nome) {
+	public Produto(Long id, String nome, Double preco) {
+		super();
 		this.id = id;
 		this.nome = nome;
+		this.preco = preco;
 	}
 
 	public Long getId() {
@@ -50,10 +59,17 @@ public class Categoria implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
 
-	public Set<Produto> getProdutos() {
-		return produtos;
+	public Double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+	public Set<Categoria> getCategorias() {
+		return categorias;
 	}
 
 	@Override
@@ -72,7 +88,7 @@ public class Categoria implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Produto other = (Produto) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -80,8 +96,6 @@ public class Categoria implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 	
 	
 
