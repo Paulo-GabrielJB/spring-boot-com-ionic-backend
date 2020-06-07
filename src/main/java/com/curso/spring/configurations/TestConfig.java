@@ -9,10 +9,15 @@ import org.springframework.context.annotation.Profile;
 
 import com.curso.spring.models.entities.Categoria;
 import com.curso.spring.models.entities.Cidade;
+import com.curso.spring.models.entities.Cliente;
+import com.curso.spring.models.entities.Endereco;
 import com.curso.spring.models.entities.Estado;
 import com.curso.spring.models.entities.Produto;
+import com.curso.spring.models.entities.enums.TipoCliente;
 import com.curso.spring.repositories.CategoriaRepository;
 import com.curso.spring.repositories.CidadeRepository;
+import com.curso.spring.repositories.ClienteRepository;
+import com.curso.spring.repositories.EnderecoRepository;
 import com.curso.spring.repositories.EstadoRepository;
 import com.curso.spring.repositories.ProdutoRepository;
 
@@ -28,6 +33,10 @@ public class TestConfig implements CommandLineRunner{
 	private EstadoRepository estadoRepository;
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -67,6 +76,17 @@ public class TestConfig implements CommandLineRunner{
 		Cidade ci3 = new Cidade(null, "Osasco", e2);
 		
 		cidadeRepository.saveAll(Arrays.asList(ci1, ci2, ci3));
+		
+		Cliente cl1 = new Cliente(null, "Maria Brown", "maria@gmail.com", "00000000191", TipoCliente.PESSOA_FISICA);
+		cl1.getTelefones().addAll(Arrays.asList("11999999999", "11988888888"));
+		
+		clienteRepository.save(cl1);
+		
+		Endereco en1 = new Endereco(null, "Rua Flores", "300",  "Apto 203", "Jardim", "38220834", cl1, ci1);
+		Endereco en2 = new Endereco(null, "Avenida Matos", "105",  "Sala 800", "Centro", "38777012", cl1, ci2);
+		Endereco en3 = new Endereco(null, "Joao Ventura dos Santos", "850",  null, "Baronesa", "0625070", cl1, ci2);
+		
+		enderecoRepository.saveAll(Arrays.asList(en1, en2, en3));
 		
 		
 	}
