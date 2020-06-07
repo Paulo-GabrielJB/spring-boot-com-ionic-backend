@@ -25,7 +25,7 @@ public class Cliente implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "CD_ENDERECO")
+	@Column(name = "CD_CLIENTE")
 	private Long id;
 	@Column(name = "NM_CLIENTE")
 	private String nome;
@@ -37,6 +37,8 @@ public class Cliente implements Serializable {
 	private Integer tipoCliente;
 	@OneToMany(mappedBy = "cliente")
 	private Set<Endereco> enderecos = new HashSet<>();
+	@OneToMany(mappedBy = "cliente")
+	private Set<Pedido> pedidos = new HashSet<>();
 	
 	@ElementCollection
 	@CollectionTable(name = "TB_TELEFONE", joinColumns = @JoinColumn(name = "CD_CLIENTE"))
@@ -105,6 +107,10 @@ public class Cliente implements Serializable {
 
 	public Set<String> getTelefones() {
 		return telefones;
+	}
+
+	public Set<Pedido> getPedidos() {
+		return pedidos;
 	}
 
 	@Override
