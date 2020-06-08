@@ -1,11 +1,14 @@
 package com.curso.spring.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.curso.spring.models.entities.Categoria;
 import com.curso.spring.repositories.CategoriaRepository;
 import com.curso.spring.services.CategoriaService;
+import com.curso.spring.services.exceptions.DatabaseException;
 import com.curso.spring.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -34,6 +37,17 @@ public class CategoriaServiceImpl implements CategoriaService {
 
 	private void updateData(Categoria obj, Categoria entity) {
 		entity.setNome(obj.getNome());
+	}
+
+	@Override
+	public void delete(Long id) {
+		try {
+			categoriaRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException("Categoria com o id " + id + " não localizada");
+        } catch (DataIntegrityViolationException e){
+            throw new DatabaseException(e.getMessage());
+        } 
 	}
 	
 }

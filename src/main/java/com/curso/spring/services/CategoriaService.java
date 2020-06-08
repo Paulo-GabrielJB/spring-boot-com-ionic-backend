@@ -7,5 +7,5 @@ public interface CategoriaService {
 	Categoria find(Long id);
 	Categoria insert(Categoria obj);
 	Categoria atualizar(Long id, Categoria obj);
-
+	void delete(Long id);
 }
