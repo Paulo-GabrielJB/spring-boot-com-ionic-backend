@@ -68,7 +68,7 @@ public class ClienteServiceImpl implements ClienteService{
 		try {
 			clienteRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e){
-            throw new ResourceNotFoundException("Categoria com o id " + id + " não localizada");
+            throw new ResourceNotFoundException("Cliente com o id " + id + " não localizada");
         } catch (DataIntegrityViolationException e){
             throw new DatabaseException(e.getMessage());
         } 
