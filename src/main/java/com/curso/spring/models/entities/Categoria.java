@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "TB_CATEGORIA")
 public class Categoria implements Serializable {

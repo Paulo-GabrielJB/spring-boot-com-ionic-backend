@@ -18,5 +18,11 @@ public class CategoriaServiceImpl implements CategoriaService {
 	public Categoria buscar(Long id) {
 		return categoriaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nenhuma categoria com o id " + id + " encontrada"));
 	}
+
+	@Override
+	public Categoria inserir(Categoria categoria) {
+		categoria.setId(null);
+		return categoriaRepository.save(categoria);
+	}
 	
 }
