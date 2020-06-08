@@ -5,12 +5,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 
 import com.curso.spring.models.entities.Categoria;
 import com.curso.spring.repositories.CategoriaRepository;
 import com.curso.spring.services.CategoriaService;
 import com.curso.spring.services.exceptions.DatabaseException;
+import com.curso.spring.services.exceptions.ResourceBadRequestException;
 import com.curso.spring.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -55,6 +60,17 @@ public class CategoriaServiceImpl implements CategoriaService {
 	@Override
 	public List<Categoria> findAll() {
 		return categoriaRepository.findAll();
+	}
+
+	@Override
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		try {
+			PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+			
+			return categoriaRepository.findAll(pageRequest);
+		} catch(PropertyReferenceException e) {
+			throw new ResourceBadRequestException("Valor do parametro informado invalido!");
+		}
 	}
 	
 }
