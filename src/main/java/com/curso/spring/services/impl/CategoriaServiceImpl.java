@@ -15,14 +15,25 @@ public class CategoriaServiceImpl implements CategoriaService {
 	private CategoriaRepository categoriaRepository;
 
 	@Override
-	public Categoria buscar(Long id) {
+	public Categoria find(Long id) {
 		return categoriaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nenhuma categoria com o id " + id + " encontrada"));
 	}
 
 	@Override
-	public Categoria inserir(Categoria categoria) {
-		categoria.setId(null);
-		return categoriaRepository.save(categoria);
+	public Categoria insert(Categoria obj) {
+		obj.setId(null);
+		return categoriaRepository.save(obj);
+	}
+
+	@Override
+	public Categoria atualizar(Long id, Categoria obj) {
+		Categoria entity = find(id);
+		updateData(obj, entity);
+		return categoriaRepository.save(entity);
+	}
+
+	private void updateData(Categoria obj, Categoria entity) {
+		entity.setNome(obj.getNome());
 	}
 	
 }

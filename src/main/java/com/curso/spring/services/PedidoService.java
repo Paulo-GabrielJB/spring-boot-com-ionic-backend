@@ -4,6 +4,6 @@ import com.curso.spring.models.entities.Pedido;
 
 public interface PedidoService {
 	
-	public Pedido buscar(Long id);
+	public Pedido find(Long id);
 
 }

@@ -4,7 +4,8 @@ import com.curso.spring.models.entities.Categoria;
 
 public interface CategoriaService {
 	
-	Categoria buscar(Long id);
-	Categoria inserir(Categoria categoria);
+	Categoria find(Long id);
+	Categoria insert(Categoria obj);
+	Categoria atualizar(Long id, Categoria obj);
 
 }

@@ -15,7 +15,7 @@ public class ClienteServiceImpl implements ClienteService{
 	private ClienteRepository clienteRepository;
 
 	@Override
-	public Cliente buscar(Long id) {
+	public Cliente find(Long id) {
 		return clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cliente com o id " + id + "não encontrado"));
 	}
 

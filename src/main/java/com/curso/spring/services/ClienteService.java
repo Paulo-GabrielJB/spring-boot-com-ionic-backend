@@ -4,6 +4,6 @@ import com.curso.spring.models.entities.Cliente;
 
 public interface ClienteService {
 
-	Cliente buscar(Long id);
+	Cliente find(Long id);
 	
 }
