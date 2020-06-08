@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.curso.spring.models.dto.CategoriaDTO;
+
 
 @Entity
 @Table(name = "TB_CATEGORIA")
@@ -30,6 +32,11 @@ public class Categoria implements Serializable {
 	private Set<Produto> produtos = new HashSet<>();
 	
 	public Categoria() {}
+	
+	public Categoria(CategoriaDTO objDto) {
+		id = objDto.getId();
+		nome = objDto.getNome();
+	}
 
 	public Categoria(Long id, String nome) {
 		this.id = id;

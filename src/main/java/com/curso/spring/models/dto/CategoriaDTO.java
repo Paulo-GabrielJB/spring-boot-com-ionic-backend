@@ -1,10 +1,16 @@
-package com.curso.spring.models.entities.dto;
+package com.curso.spring.models.dto;
+
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import com.curso.spring.models.entities.Categoria;
 
 public class CategoriaDTO {
 
 	private Long id;
+	@NotEmpty
+	@Size(min = 5, max = 80, message = "O tamanho do nome deve ser entre 5 e 80 caracteres")
 	private String nome;
 	
 	public CategoriaDTO() {}
