@@ -1,5 +1,7 @@
 package com.curso.spring.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -48,6 +50,11 @@ public class CategoriaServiceImpl implements CategoriaService {
         } catch (DataIntegrityViolationException e){
             throw new DatabaseException(e.getMessage());
         } 
+	}
+
+	@Override
+	public List<Categoria> findAll() {
+		return categoriaRepository.findAll();
 	}
 	
 }
