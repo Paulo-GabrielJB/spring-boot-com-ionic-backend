@@ -36,7 +36,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 	}
 
 	@Override
-	public Categoria atualizar(Long id, Categoria obj) {
+	public Categoria update(Long id, Categoria obj) {
 		Categoria entity = find(id);
 		updateData(obj, entity);
 		return categoriaRepository.save(entity);

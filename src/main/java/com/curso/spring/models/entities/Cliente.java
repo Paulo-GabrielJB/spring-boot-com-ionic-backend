@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.curso.spring.models.dto.ClienteDTO;
 import com.curso.spring.models.entities.enums.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -49,6 +50,12 @@ public class Cliente implements Serializable {
 	
 	
 	public Cliente() {}
+	
+	public Cliente(ClienteDTO objDto) {
+		id = objDto.getId();
+		nome = objDto.getNome();
+		email = objDto.getEmail();
+	}
 
 	public Cliente(Long id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente) {
 		super();

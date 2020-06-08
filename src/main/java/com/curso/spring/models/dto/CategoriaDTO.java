@@ -9,7 +9,7 @@ import com.curso.spring.models.entities.Categoria;
 public class CategoriaDTO {
 
 	private Long id;
-	@NotEmpty
+	@NotEmpty(message = "Preenchimento obrigatorio")
 	@Size(min = 5, max = 80, message = "O tamanho do nome deve ser entre 5 e 80 caracteres")
 	private String nome;
 	
