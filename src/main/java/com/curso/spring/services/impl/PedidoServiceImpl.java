@@ -16,7 +16,7 @@ public class PedidoServiceImpl implements PedidoService {
 
 	@Override
 	public Pedido find(Long id) {
-		return pedidoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nenhuma categoria com o id " + id + " encontrada"));
+		return pedidoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nenhuma pedido com o id " + id + " encontrada"));
 	}
 	
 }
