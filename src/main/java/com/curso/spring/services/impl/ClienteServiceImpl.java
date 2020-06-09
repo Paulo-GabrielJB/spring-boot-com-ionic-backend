@@ -2,6 +2,8 @@ package com.curso.spring.services.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -30,6 +32,7 @@ public class ClienteServiceImpl implements ClienteService{
 	}
 
 	@Override
+	@Transactional
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
 		return clienteRepository.save(obj);
