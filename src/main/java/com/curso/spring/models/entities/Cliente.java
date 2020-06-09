@@ -33,9 +33,9 @@ public class Cliente implements Serializable {
 	private Long id;
 	@Column(name = "NM_CLIENTE")
 	private String nome;
-	@Column(name = "DS_EMAIL")
+	@Column(name = "DS_EMAIL", unique = true)
 	private String email;
-	@Column(name = "NM_CPF_CNPJ")
+	@Column(name = "NM_CPF_CNPJ", unique = true)
 	private String cpfOuCnpj;
 	@Column(name = "CD_TIPO_CLIENTE")
 	private Integer tipoCliente;
