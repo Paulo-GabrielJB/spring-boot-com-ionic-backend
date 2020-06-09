@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -16,13 +17,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.curso.spring.models.dto.ClienteDTO;
+import com.curso.spring.models.dto.ClienteNewDTO;
 import com.curso.spring.models.entities.enums.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "TB_CLIENTE")
 public class Cliente implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -37,24 +39,41 @@ public class Cliente implements Serializable {
 	private String cpfOuCnpj;
 	@Column(name = "CD_TIPO_CLIENTE")
 	private Integer tipoCliente;
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private Set<Endereco> enderecos = new HashSet<>();
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private Set<Pedido> pedidos = new HashSet<>();
-	
+
 	@ElementCollection
 	@CollectionTable(name = "TB_TELEFONE", joinColumns = @JoinColumn(name = "CD_CLIENTE"))
 	@Column(name = "NM_TELEFONE")
 	private Set<String> telefones = new HashSet<>();
-	
-	
-	public Cliente() {}
-	
+
+	public Cliente() {
+	}
+
 	public Cliente(ClienteDTO objDto) {
 		id = objDto.getId();
 		nome = objDto.getNome();
 		email = objDto.getEmail();
+	}
+
+	public Cliente(ClienteNewDTO objDto) {
+		id = null;
+		nome = objDto.getNome();
+		email = objDto.getEmail();
+		cpfOuCnpj = objDto.getCpfOuCnpj();
+		tipoCliente = objDto.getTipoCliente();
+		Cidade cid = new Cidade(objDto.getCodigoCidade(), null, null);
+		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(),
+				objDto.getBairro(), objDto.getCep(), this, cid);
+		enderecos.add(end);
+		telefones.add(objDto.getTelefone1());
+		if (objDto.getTelefone2() != null)
+			telefones.add(objDto.getTelefone2());
+		if (objDto.getTelefone3() != null)
+			telefones.add(objDto.getTelefone3());
 	}
 
 	public Cliente(Long id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente) {
@@ -146,5 +165,5 @@ public class Cliente implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 }

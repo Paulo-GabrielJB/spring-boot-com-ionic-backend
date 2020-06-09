@@ -31,8 +31,8 @@ public class ClienteServiceImpl implements ClienteService{
 
 	@Override
 	public Cliente insert(Cliente obj) {
-		// TODO Auto-generated method stub
-		return null;
+		obj.setId(null);
+		return clienteRepository.save(obj);
 	}
 
 	@Override

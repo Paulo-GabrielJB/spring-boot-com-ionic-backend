@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.curso.spring.models.dto.ClienteDTO;
+import com.curso.spring.models.dto.ClienteNewDTO;
 import com.curso.spring.models.entities.Cliente;
 import com.curso.spring.services.ClienteService;
 
@@ -55,7 +56,7 @@ public class ClienteResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteDTO objDto){
+	public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteNewDTO objDto){
 		Cliente obj = clienteService.insert(new Cliente(objDto));
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
