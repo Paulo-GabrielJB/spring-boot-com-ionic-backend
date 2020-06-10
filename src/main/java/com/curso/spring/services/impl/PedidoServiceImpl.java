@@ -14,6 +14,7 @@ import com.curso.spring.repositories.ItemPedidoRepository;
 import com.curso.spring.repositories.PagamentoRepository;
 import com.curso.spring.repositories.PedidoRepository;
 import com.curso.spring.services.ClienteService;
+import com.curso.spring.services.EmailService;
 import com.curso.spring.services.PedidoService;
 import com.curso.spring.services.ProdutoService;
 import com.curso.spring.services.exceptions.ResourceNotFoundException;
@@ -33,6 +34,8 @@ public class PedidoServiceImpl implements PedidoService {
 	private ItemPedidoRepository itemPedidoRepository;
 	@Autowired
 	private ClienteService clienteService;
+	@Autowired
+	private EmailService emailService;
 	
 	@Override
 	public Pedido find(Long id) {
@@ -64,7 +67,7 @@ public class PedidoServiceImpl implements PedidoService {
 		
 		itemPedidoRepository.saveAll(obj.getItens());
 		
-		System.out.println(obj.toString());
+		emailService.sendOrderConfirmationEmail(obj);
 		
 		return obj;
 	}

@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -30,6 +31,8 @@ import com.curso.spring.repositories.ItemPedidoRepository;
 import com.curso.spring.repositories.PagamentoRepository;
 import com.curso.spring.repositories.PedidoRepository;
 import com.curso.spring.repositories.ProdutoRepository;
+import com.curso.spring.services.EmailService;
+import com.curso.spring.services.impl.MockEmailService;
 
 @Configuration
 @Profile("test")
@@ -147,7 +150,11 @@ public class TestConfig implements CommandLineRunner{
 		
 		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
-		
+	}
+	
+	@Bean
+	public EmailService emailService() {
+		return new MockEmailService();
 	}
 
 }
