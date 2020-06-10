@@ -8,9 +8,11 @@ import javax.persistence.Table;
 
 import com.curso.spring.models.entities.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @Entity
 @Table(name = "TB_PAGAMENTO_COM_BOLETO")
+@JsonTypeName("pagamentoComBoleto")
 public class PagamentoComBoleto extends Pagamento {
 	
 	private static final long serialVersionUID = 1L;
