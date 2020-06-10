@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -31,6 +32,8 @@ import com.curso.spring.repositories.ItemPedidoRepository;
 import com.curso.spring.repositories.PagamentoRepository;
 import com.curso.spring.repositories.PedidoRepository;
 import com.curso.spring.repositories.ProdutoRepository;
+import com.curso.spring.services.EmailService;
+import com.curso.spring.services.impl.SmtpEmailService;
 
 @Configuration
 @Profile("dev")
@@ -121,7 +124,7 @@ public class DevConfig implements CommandLineRunner{
 		
 		cidadeRepository.saveAll(Arrays.asList(ci1, ci2, ci3));
 		
-		Cliente cl1 = new Cliente(null, "Maria Brown", "maria@gmail.com", "00000000191", TipoCliente.PESSOA_FISICA);
+		Cliente cl1 = new Cliente(null, "Maria Brown", "pgj1085@gmail.com", "00000000191", TipoCliente.PESSOA_FISICA);
 		cl1.getTelefones().addAll(Arrays.asList("11999999999", "11988888888"));
 		
 		clienteRepository.save(cl1);
@@ -155,6 +158,11 @@ public class DevConfig implements CommandLineRunner{
 		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
 		
+	}
+	
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 
 }
