@@ -3,12 +3,14 @@ package com.curso.spring.models.entities;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,13 +18,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.curso.spring.models.dto.ClienteDTO;
 import com.curso.spring.models.dto.ClienteNewDTO;
+import com.curso.spring.models.entities.enums.Perfil;
 import com.curso.spring.models.entities.enums.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import io.jsonwebtoken.lang.Collections;
 
 @Entity
 @Table(name = "TB_CLIENTE")
@@ -55,14 +57,21 @@ public class Cliente implements Serializable {
 	@CollectionTable(name = "TB_TELEFONE", joinColumns = @JoinColumn(name = "CD_CLIENTE"))
 	@Column(name = "NM_TELEFONE")
 	private Set<String> telefones = new HashSet<>();
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "TB_PEFIL", joinColumns = @JoinColumn(name = "CD_CLIENTE"))
+	@Column(name = "CD_PERFIL")
+	private Set<Integer> perfis = new HashSet<>();
 
 	public Cliente() {
+		addPerfil(Perfil.CLIENTE);
 	}
 
 	public Cliente(ClienteDTO objDto) {
 		id = objDto.getId();
 		nome = objDto.getNome();
 		email = objDto.getEmail();
+		addPerfil(Perfil.CLIENTE);
 	}
 
 	public Cliente(ClienteNewDTO objDto) {
@@ -77,6 +86,7 @@ public class Cliente implements Serializable {
 				objDto.getBairro(), objDto.getCep(), this, cid);
 		enderecos.add(end);
 		telefones.add(objDto.getTelefone1());
+		addPerfil(Perfil.CLIENTE);
 		if (objDto.getTelefone2() != null)
 			telefones.add(objDto.getTelefone2());
 		if (objDto.getTelefone3() != null)
@@ -91,6 +101,7 @@ public class Cliente implements Serializable {
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipoCliente = tipoCliente == null ? null : tipoCliente.getCodigo();
 		this.senha = senha;
+		addPerfil(Perfil.CLIENTE);
 	}
 
 	public Long getId() {
@@ -156,6 +167,14 @@ public class Cliente implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCodigo());
+	}
+
+	public Set<Perfil> getPerfis() {
+		return perfis.stream().map(Perfil::toEnum).collect(Collectors.toSet());
 	}
 
 	@Override

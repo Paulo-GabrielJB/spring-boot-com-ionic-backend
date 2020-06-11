@@ -23,6 +23,7 @@ import com.curso.spring.models.entities.PagamentoComCartao;
 import com.curso.spring.models.entities.Pedido;
 import com.curso.spring.models.entities.Produto;
 import com.curso.spring.models.entities.enums.EstadoPagamento;
+import com.curso.spring.models.entities.enums.Perfil;
 import com.curso.spring.models.entities.enums.TipoCliente;
 import com.curso.spring.repositories.CategoriaRepository;
 import com.curso.spring.repositories.CidadeRepository;
@@ -129,9 +130,12 @@ public class DevConfig implements CommandLineRunner{
 		cidadeRepository.saveAll(Arrays.asList(ci1, ci2, ci3));
 		
 		Cliente cl1 = new Cliente(null, "Maria Brown", "pgj1085@gmail.com", "00000000191", TipoCliente.PESSOA_FISICA, pe.encode("maria123"));
+		Cliente cl2 = new Cliente(null, "Paulo", "pgj1085@gmail.com", "60514319003", TipoCliente.PESSOA_FISICA, pe.encode("paulo123"));
+		cl2.getTelefones().addAll(Arrays.asList("11977777777"));
+		cl2.addPerfil(Perfil.ADMIN);
 		cl1.getTelefones().addAll(Arrays.asList("11999999999", "11988888888"));
 		
-		clienteRepository.save(cl1);
+		clienteRepository.saveAll(Arrays.asList(cl1, cl2));
 		
 		Endereco en1 = new Endereco(null, "Rua Flores", "300",  "Apto 203", "Jardim", "38220834", cl1, ci1);
 		Endereco en2 = new Endereco(null, "Avenida Matos", "105",  "Sala 800", "Centro", "38777012", cl1, ci2);
