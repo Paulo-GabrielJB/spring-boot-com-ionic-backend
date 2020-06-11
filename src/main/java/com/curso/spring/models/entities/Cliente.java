@@ -16,6 +16,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import com.curso.spring.models.dto.ClienteDTO;
 import com.curso.spring.models.dto.ClienteNewDTO;
 import com.curso.spring.models.entities.enums.TipoCliente;
@@ -39,6 +42,9 @@ public class Cliente implements Serializable {
 	private String cpfOuCnpj;
 	@Column(name = "CD_TIPO_CLIENTE")
 	private Integer tipoCliente;
+	@JsonIgnore
+	@Column(name = "PW_CLIENTE")
+	private String senha;
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private Set<Endereco> enderecos = new HashSet<>();
 	@JsonIgnore
@@ -65,6 +71,7 @@ public class Cliente implements Serializable {
 		email = objDto.getEmail();
 		cpfOuCnpj = objDto.getCpfOuCnpj();
 		tipoCliente = objDto.getTipoCliente();
+		senha = objDto.getSenha();
 		Cidade cid = new Cidade(objDto.getCodigoCidade(), null, null);
 		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(),
 				objDto.getBairro(), objDto.getCep(), this, cid);
@@ -76,13 +83,14 @@ public class Cliente implements Serializable {
 			telefones.add(objDto.getTelefone3());
 	}
 
-	public Cliente(Long id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente) {
+	public Cliente(Long id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipoCliente = tipoCliente == null ? null : tipoCliente.getCodigo();
+		this.senha = senha;
 	}
 
 	public Long getId() {
@@ -139,6 +147,15 @@ public class Cliente implements Serializable {
 
 	public Set<Pedido> getPedidos() {
 		return pedidos;
+	}
+	
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	@Override

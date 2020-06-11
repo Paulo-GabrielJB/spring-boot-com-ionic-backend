@@ -31,6 +31,8 @@ public class ClienteNewDTO implements Serializable {
 	private String bairro;
 	@NotEmpty(message = "Preenchimento obrigatorio")
 	private String cep;
+	@NotEmpty(message = "Preenchimento obrigatorio")
+	private String senha;
 	
 	@NotEmpty(message = "Preenchimento obrigatorio")
 	private String telefone1;
@@ -144,6 +146,16 @@ public class ClienteNewDTO implements Serializable {
 	public void setCodigoCidade(Long codigoCidade) {
 		this.codigoCidade = codigoCidade;
 	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	
+	
 	
 	
 

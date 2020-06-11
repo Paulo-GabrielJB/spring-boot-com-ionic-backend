@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mapping.PropertyReferenceException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.curso.spring.models.entities.Cliente;
@@ -24,6 +25,8 @@ public class ClienteServiceImpl implements ClienteService{
 	
 	@Autowired
 	private ClienteRepository clienteRepository;
+	@Autowired
+	private BCryptPasswordEncoder pe;
 
 	@Override
 	public Cliente find(Long id) {
@@ -34,6 +37,7 @@ public class ClienteServiceImpl implements ClienteService{
 	@Transactional
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
+		obj.setSenha(pe.encode(obj.getSenha()));
 		return clienteRepository.save(obj);
 	}
 

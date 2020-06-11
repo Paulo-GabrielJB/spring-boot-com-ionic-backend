@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.curso.spring.models.entities.Categoria;
 import com.curso.spring.models.entities.Cidade;
@@ -57,6 +58,7 @@ public class TestConfig implements CommandLineRunner{
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	@Autowired
+	private BCryptPasswordEncoder pe;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -118,7 +120,7 @@ public class TestConfig implements CommandLineRunner{
 		
 		cidadeRepository.saveAll(Arrays.asList(ci1, ci2, ci3));
 		
-		Cliente cl1 = new Cliente(null, "Maria Brown", "maria@gmail.com", "00000000191", TipoCliente.PESSOA_FISICA);
+		Cliente cl1 = new Cliente(null, "Maria Brown", "maria@gmail.com", "00000000191", TipoCliente.PESSOA_FISICA, pe.encode("maria123"));
 		cl1.getTelefones().addAll(Arrays.asList("11999999999", "11988888888"));
 		
 		clienteRepository.save(cl1);
