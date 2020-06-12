@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.curso.spring.services.exceptions.AuthorizationException;
 import com.curso.spring.services.exceptions.DatabaseException;
 import com.curso.spring.services.exceptions.ResourceBadRequestException;
 import com.curso.spring.services.exceptions.ResourceNotFoundException;
@@ -54,4 +55,12 @@ public class ResourceExceptionHandler {
         
         return ResponseEntity.status(status).body(validatioError);
     }
+	
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> authorization(AuthorizationException ex, HttpServletRequest request){
+        String error = "Forbidden!";
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        StandardError standardError = new StandardError(Instant.now(), status.value(), error, ex.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(standardError);
+	}
 }

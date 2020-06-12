@@ -2,7 +2,6 @@ package com.curso.spring.services.impl;
 
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -12,10 +11,15 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.curso.spring.models.entities.Cliente;
+import com.curso.spring.models.entities.enums.Perfil;
 import com.curso.spring.repositories.ClienteRepository;
+import com.curso.spring.security.UserSS;
 import com.curso.spring.services.ClienteService;
+import com.curso.spring.services.UserService;
+import com.curso.spring.services.exceptions.AuthorizationException;
 import com.curso.spring.services.exceptions.DatabaseException;
 import com.curso.spring.services.exceptions.ResourceBadRequestException;
 import com.curso.spring.services.exceptions.ResourceNotFoundException;
@@ -30,6 +34,9 @@ public class ClienteServiceImpl implements ClienteService{
 
 	@Override
 	public Cliente find(Long id) {
+		UserSS user = UserService.authenticated();
+		if(user == null || !user.hasRole(Perfil.ADMIN) && !user.getId().equals(id))
+			throw new AuthorizationException("Acesso negado!");
 		return clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cliente com o id " + id + "não encontrado"));
 	}
 
