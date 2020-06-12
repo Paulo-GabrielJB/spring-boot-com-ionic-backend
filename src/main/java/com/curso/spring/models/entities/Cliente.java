@@ -24,8 +24,6 @@ import com.curso.spring.models.entities.enums.Perfil;
 import com.curso.spring.models.entities.enums.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import io.jsonwebtoken.lang.Collections;
-
 @Entity
 @Table(name = "TB_CLIENTE")
 public class Cliente implements Serializable {
