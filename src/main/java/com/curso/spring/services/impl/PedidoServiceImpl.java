@@ -3,9 +3,14 @@ package com.curso.spring.services.impl;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.curso.spring.models.entities.Cliente;
 import com.curso.spring.models.entities.ItemPedido;
 import com.curso.spring.models.entities.PagamentoComBoleto;
 import com.curso.spring.models.entities.Pedido;
@@ -13,10 +18,14 @@ import com.curso.spring.models.entities.enums.EstadoPagamento;
 import com.curso.spring.repositories.ItemPedidoRepository;
 import com.curso.spring.repositories.PagamentoRepository;
 import com.curso.spring.repositories.PedidoRepository;
+import com.curso.spring.security.UserSS;
 import com.curso.spring.services.ClienteService;
 import com.curso.spring.services.EmailService;
 import com.curso.spring.services.PedidoService;
 import com.curso.spring.services.ProdutoService;
+import com.curso.spring.services.UserService;
+import com.curso.spring.services.exceptions.AuthorizationException;
+import com.curso.spring.services.exceptions.ResourceBadRequestException;
 import com.curso.spring.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -36,7 +45,7 @@ public class PedidoServiceImpl implements PedidoService {
 	private ClienteService clienteService;
 	@Autowired
 	private EmailService emailService;
-	
+
 	@Override
 	public Pedido find(Long id) {
 		return pedidoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nenhuma pedido com o id " + id + " encontrada"));
@@ -70,6 +79,25 @@ public class PedidoServiceImpl implements PedidoService {
 		emailService.sendOrderConfirmationHtmlEmail(obj);
 		
 		return obj;
+	}
+
+	@Override
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		
+		try {
+			UserSS user = UserService.authenticated();
+			if(user == null)
+				throw new AuthorizationException("Acesso negado!");
+			
+			PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+			
+			Cliente cliente = clienteService.find(user.getId());
+			
+			return pedidoRepository.findByCliente(cliente, pageRequest);
+			
+		} catch(PropertyReferenceException e) {
+			throw new ResourceBadRequestException("Valor do parametro informado invalido!");
+		}
 	}
 	
 }
