@@ -95,7 +95,18 @@ public class ClienteServiceImpl implements ClienteService{
 
 	@Override
 	public URI uploadProfilePictur(MultipartFile multipartfile) {
-		return s3Service.uploadFile(multipartfile);
+		UserSS user = UserService.authenticated();
+		if(user == null)
+			throw new AuthorizationException("Acesso negado!");
+		URI uri = s3Service.uploadFile(multipartfile);
+		
+		Cliente cliente = clienteRepository.findById(user.getId()).orElseThrow(() -> new ResourceNotFoundException("Cliente não localizado"));
+		
+		cliente.setImageURL(uri.toString());
+		
+		clienteRepository.save(cliente);
+		
+		return uri;
 	}
 
 }

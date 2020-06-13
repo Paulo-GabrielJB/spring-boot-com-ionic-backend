@@ -60,6 +60,8 @@ public class Cliente implements Serializable {
 	@CollectionTable(name = "TB_PEFIL", joinColumns = @JoinColumn(name = "CD_CLIENTE"))
 	@Column(name = "CD_PERFIL")
 	private Set<Integer> perfis = new HashSet<>();
+	@Column(name = "URL_PICTURE")
+	private String imageURL;
 
 	public Cliente() {
 		addPerfil(Perfil.CLIENTE);
@@ -100,6 +102,15 @@ public class Cliente implements Serializable {
 		this.tipoCliente = tipoCliente == null ? null : tipoCliente.getCodigo();
 		this.senha = senha;
 		addPerfil(Perfil.CLIENTE);
+	}
+	
+
+	public String getImageURL() {
+		return imageURL;
+	}
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 
 	public Long getId() {
