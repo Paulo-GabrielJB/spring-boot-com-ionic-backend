@@ -9,6 +9,8 @@ public interface ImageService {
 	
 	BufferedImage getJpgImagemFromFile(MultipartFile uploadedFile);
 	BufferedImage pngToJpg(BufferedImage img);
+	BufferedImage cropSquare(BufferedImage img);
+	BufferedImage resize(BufferedImage img, int size);
 	InputStream getInputStream(BufferedImage img, String extension);
 
 }

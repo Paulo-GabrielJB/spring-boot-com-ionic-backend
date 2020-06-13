@@ -44,6 +44,8 @@ public class ClienteServiceImpl implements ClienteService{
 	
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
+	@Value("${img.profile.size}")
+	private Integer size;
 
 	@Override
 	public Cliente find(Long id) {
@@ -108,6 +110,8 @@ public class ClienteServiceImpl implements ClienteService{
 			throw new AuthorizationException("Acesso negado!");
 		
 		BufferedImage jpgImage = imageService.getJpgImagemFromFile(multipartfile);
+		jpgImage = imageService.cropSquare(jpgImage);
+		jpgImage = imageService.resize(jpgImage, size);
 		
 		Cliente cliente = clienteRepository.findById(user.getId()).orElseThrow(() -> new ResourceNotFoundException("Cliente não localizado"));
 		
