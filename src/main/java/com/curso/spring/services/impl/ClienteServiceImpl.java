@@ -1,9 +1,11 @@
 package com.curso.spring.services.impl;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,7 @@ import com.curso.spring.models.entities.enums.Perfil;
 import com.curso.spring.repositories.ClienteRepository;
 import com.curso.spring.security.UserSS;
 import com.curso.spring.services.ClienteService;
+import com.curso.spring.services.ImageService;
 import com.curso.spring.services.S3Service;
 import com.curso.spring.services.UserService;
 import com.curso.spring.services.exceptions.AuthorizationException;
@@ -36,6 +39,11 @@ public class ClienteServiceImpl implements ClienteService{
 	private BCryptPasswordEncoder pe;
 	@Autowired
 	private S3Service s3Service;
+	@Autowired
+	private ImageService imageService;
+	
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
 
 	@Override
 	public Cliente find(Long id) {
@@ -98,15 +106,15 @@ public class ClienteServiceImpl implements ClienteService{
 		UserSS user = UserService.authenticated();
 		if(user == null)
 			throw new AuthorizationException("Acesso negado!");
-		URI uri = s3Service.uploadFile(multipartfile);
+		
+		BufferedImage jpgImage = imageService.getJpgImagemFromFile(multipartfile);
 		
 		Cliente cliente = clienteRepository.findById(user.getId()).orElseThrow(() -> new ResourceNotFoundException("Cliente não localizado"));
 		
-		cliente.setImageURL(uri.toString());
+		String fileName = prefix + cliente.getId() + ".jpg";
 		
-		clienteRepository.save(cliente);
 		
-		return uri;
+		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
 	}
 
 }
