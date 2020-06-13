@@ -1,5 +1,6 @@
 package com.curso.spring.services.impl;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,14 @@ import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.curso.spring.models.entities.Cliente;
 import com.curso.spring.models.entities.enums.Perfil;
 import com.curso.spring.repositories.ClienteRepository;
 import com.curso.spring.security.UserSS;
 import com.curso.spring.services.ClienteService;
+import com.curso.spring.services.S3Service;
 import com.curso.spring.services.UserService;
 import com.curso.spring.services.exceptions.AuthorizationException;
 import com.curso.spring.services.exceptions.DatabaseException;
@@ -31,6 +34,8 @@ public class ClienteServiceImpl implements ClienteService{
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private BCryptPasswordEncoder pe;
+	@Autowired
+	private S3Service s3Service;
 
 	@Override
 	public Cliente find(Long id) {
@@ -86,6 +91,11 @@ public class ClienteServiceImpl implements ClienteService{
             throw new DatabaseException(e.getMessage());
         } 
 		
+	}
+
+	@Override
+	public URI uploadProfilePictur(MultipartFile multipartfile) {
+		return s3Service.uploadFile(multipartfile);
 	}
 
 }

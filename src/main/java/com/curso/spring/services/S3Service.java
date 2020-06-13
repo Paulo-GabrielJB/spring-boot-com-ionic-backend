@@ -1,7 +1,11 @@
 package com.curso.spring.services;
 
+import java.net.URI;
+
+import org.springframework.web.multipart.MultipartFile;
+
 public interface S3Service {
 
-	void uploadFile(String localFilePath);
+	URI uploadFile(MultipartFile multipartFile);
 	
 }

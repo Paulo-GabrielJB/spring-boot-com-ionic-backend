@@ -34,7 +34,6 @@ import com.curso.spring.repositories.PagamentoRepository;
 import com.curso.spring.repositories.PedidoRepository;
 import com.curso.spring.repositories.ProdutoRepository;
 import com.curso.spring.services.EmailService;
-import com.curso.spring.services.S3Service;
 import com.curso.spring.services.impl.MockEmailService;
 
 @Configuration
@@ -61,9 +60,7 @@ public class TestConfig implements CommandLineRunner{
 	private ItemPedidoRepository itemPedidoRepository;
 	@Autowired
 	private BCryptPasswordEncoder pe;
-	@Autowired
-	private S3Service s3Service;
-	
+
 	@Override
 	public void run(String... args) throws Exception {
 		
@@ -160,7 +157,6 @@ public class TestConfig implements CommandLineRunner{
 		
 		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
-		s3Service.uploadFile("F:\\downloads\\wallpaper.jpg");
 		
 	}
 	
